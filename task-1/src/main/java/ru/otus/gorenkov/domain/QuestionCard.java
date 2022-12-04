@@ -5,8 +5,12 @@ import java.util.List;
 public class QuestionCard {
 
     private String id;
-    private String question;
+    private final String question;
     private List<Answer> answers;
+
+    public QuestionCard(String question) {
+        this.question = question;
+    }
 
     public String getId() {
         return id;
@@ -20,10 +24,6 @@ public class QuestionCard {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
     public List<Answer> getAnswers() {
         return answers;
     }
@@ -32,10 +32,4 @@ public class QuestionCard {
         this.answers = answers;
     }
 
-    @Override
-    public String toString() {
-        final String[] res = {question + "? \n"};
-        answers.forEach(a -> res[0] += (a.getIdWithDelimiter() + a.getText()) + "\n");
-        return res[0];
-    }
 }

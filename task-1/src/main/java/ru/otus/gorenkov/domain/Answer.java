@@ -4,8 +4,12 @@ public class Answer {
 
     private static final String DELIMITER_ID = ")";
     private String id;
-    private String text;
+    private final String text;
     private boolean right;
+
+    public Answer(String text) {
+        this.text = text;
+    }
 
     public String getId() {
         return id;
@@ -17,10 +21,6 @@ public class Answer {
 
     public String getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public boolean isRight() {

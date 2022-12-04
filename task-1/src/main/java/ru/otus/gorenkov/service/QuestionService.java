@@ -7,4 +7,6 @@ import java.util.List;
 public interface QuestionService {
 
     List<QuestionCard> getAllQuestionCards();
+
+    void printAllQuestionCards();
 }

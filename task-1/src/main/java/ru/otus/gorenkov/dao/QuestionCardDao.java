@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface QuestionCardDao {
 
-    List<QuestionCard> getAllQuestionCards();
+    List<QuestionCard> getAll();
 
     QuestionCard getQuestionCardById(int id);
 
