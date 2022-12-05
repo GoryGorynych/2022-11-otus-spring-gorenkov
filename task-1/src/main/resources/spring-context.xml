@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="questionConverter"
+          class="ru.otus.gorenkov.service.QuestionConverterImpl">
+    </bean>
+    <bean id="questionDao"
+          class="ru.otus.gorenkov.dao.QuestionCardDaoCsv">
+        <constructor-arg name="path" value="questionsWithAnswers.csv"/>
+        <constructor-arg name="converter" ref="questionConverter"/>
+    </bean>
+    <bean id="questionService"
+          class="ru.otus.gorenkov.service.QuestionServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDao"/>
+        <constructor-arg name="converter" ref="questionConverter"/>
+    </bean>
+
+</beans>
