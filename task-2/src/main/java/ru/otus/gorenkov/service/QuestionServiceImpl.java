@@ -1,10 +1,11 @@
 package ru.otus.gorenkov.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.gorenkov.dao.QuestionCardDao;
 import ru.otus.gorenkov.domain.QuestionCard;
+import ru.otus.gorenkov.exception.CorrectAnswerNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,12 +20,21 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public List<QuestionCard> getAllQuestionCards() {
-        return questionDao.getAll();
+        List<QuestionCard> resultQuestionList = null;
+        try {
+            resultQuestionList = questionDao.getAll();
+        } catch (CorrectAnswerNotFoundException notFoundException) {
+            if (resultQuestionList == null) {
+                resultQuestionList = new ArrayList<>();
+            }
+            System.out.println(notFoundException);
+        }
+        return resultQuestionList;
     }
 
     @Override
     public void printAllQuestionCards() {
-        questionDao.getAll()
+        getAllQuestionCards()
                 .forEach(questionCard -> System.out.println(
                         converter.convertQuestionCardToString(questionCard)));
     }

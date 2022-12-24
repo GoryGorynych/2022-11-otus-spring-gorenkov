@@ -5,7 +5,7 @@ public class Answer {
     private static final String DELIMITER_ID = ")";
     private String id;
     private final String text;
-    private boolean right;
+    private boolean correct;
 
     public Answer(String text) {
         this.text = text;
@@ -23,12 +23,12 @@ public class Answer {
         return text;
     }
 
-    public boolean isRight() {
-        return right;
+    public boolean isCorrect() {
+        return correct;
     }
 
-    public void setRight(boolean right) {
-        this.right = right;
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
     }
 
     public String getIdWithDelimiter() {

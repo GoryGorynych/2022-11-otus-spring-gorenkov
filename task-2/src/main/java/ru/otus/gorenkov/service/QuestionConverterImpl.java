@@ -1,9 +1,9 @@
 package ru.otus.gorenkov.service;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.otus.gorenkov.domain.Answer;
 import ru.otus.gorenkov.domain.QuestionCard;
+import ru.otus.gorenkov.exception.CorrectAnswerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class QuestionConverterImpl implements QuestionConverter{
         String questText = line[0];
         QuestionCard questCard = new QuestionCard(questText);
 
-        String[] answers = Arrays.copyOfRange(line, 1, line.length);
+        String[] answers = Arrays.copyOfRange(line, 1, line.length-1);
         List<Answer> answerList = new ArrayList<>();
         char firstLetter = 'a';
         for(int i = 0; i < answers.length ; i++){
@@ -40,10 +40,19 @@ public class QuestionConverterImpl implements QuestionConverter{
             String text = answers[i];
             Answer answer = new Answer(text);
             answer.setId(String.valueOf(charID));
-            answer.setRight(false);
+            answer.setCorrect(false);
             answerList.add(answer);
         }
         questCard.setAnswers(answerList);
+
+        String correctId = line[line.length-1];
+        List<Answer> findCorrectAnswer = answerList.stream().filter(answer -> answer.getId().equals(correctId))
+                .collect(Collectors.toList());
+        if (findCorrectAnswer.size() == 0) {
+            throw new CorrectAnswerNotFoundException(String.format("Not found correct answer for question %s", questText));
+        }
+        findCorrectAnswer.get(0).setCorrect(true);
+
         return questCard;
     }
 }
