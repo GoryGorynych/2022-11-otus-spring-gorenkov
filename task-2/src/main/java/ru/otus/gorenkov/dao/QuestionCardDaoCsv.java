@@ -22,6 +22,7 @@ public class QuestionCardDaoCsv implements QuestionCardDao {
     private final Resource csvResource;
     private final QuestionConverter converter;
     public QuestionCardDaoCsv(@Value("${resource.path.csv}") String path, QuestionConverter converter) {
+
         csvResource = new ClassPathResource(path);
         this.converter = converter;
 
