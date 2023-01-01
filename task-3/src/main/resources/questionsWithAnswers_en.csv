@@ -1,0 +1,6 @@
+question;answer_choice_a;answer_choice_b;answer_choice_c;correct_answer
+Which statement regarding the java.lang.Object class is true; this class has no fields; you cannot explicitly override the methods of this class;you cannot explicitly inherit this class;a
+Which statement about the String class is true;is abstract;contains only static methods;has the property of immutability;c
+What advantage does the Runnable interface provide in comparison with the Thread class; allows you to work more flexibly with thread priorities;allows the class containing the logic of work to inherit from other classes;allows you to do without the Thread class;b
+Which encoding is used by the OutputStreamWriter class by default;UTF-8 regardless of the system where the Java machine is running;UTF-16 regardless of the system where the Java machine is running;the encoding used depends on the system where the Java machine is running;c
+How multithreaded applications are executed on a single-processor machine; the number of processors for a multithreaded architecture does not matter;the processor's working time is divided into small intervals during which one task is performed, after which a switch to the next task occurs; multithreaded applications are not executed on a single-processor computer;b
