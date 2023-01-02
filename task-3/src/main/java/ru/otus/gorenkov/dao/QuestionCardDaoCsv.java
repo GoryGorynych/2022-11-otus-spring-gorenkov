@@ -8,7 +8,7 @@ import com.opencsv.exceptions.CsvException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import ru.otus.gorenkov.config.AppProps;
+import ru.otus.gorenkov.config.GeneralProps;
 import ru.otus.gorenkov.domain.QuestionCard;
 import ru.otus.gorenkov.service.QuestionConverter;
 
@@ -21,12 +21,12 @@ import java.util.List;
 public class QuestionCardDaoCsv implements QuestionCardDao {
     private final Resource csvResource;
     private final QuestionConverter converter;
-    private final AppProps appProps;
+    private final GeneralProps generalProps;
 
-    public QuestionCardDaoCsv(AppProps props, QuestionConverter converter) {
+    public QuestionCardDaoCsv(GeneralProps config, QuestionConverter converter) {
 
-        this.appProps = props;
-        csvResource = new ClassPathResource(appProps.getPathCsv());
+        this.generalProps = config;
+        csvResource = new ClassPathResource(generalProps.getPathCsv());
         this.converter = converter;
     }
     @Override
