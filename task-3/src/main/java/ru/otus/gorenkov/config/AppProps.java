@@ -17,7 +17,6 @@ public class AppProps implements GeneralProps, LocaleProps {
         return pathCsv;
     }
 
-    @Override
     public void setPathCsv(String pathCsv) {
         this.pathCsv = pathCsv;
     }
@@ -27,7 +26,6 @@ public class AppProps implements GeneralProps, LocaleProps {
         return passNumberOfCorrectAnswer;
     }
 
-    @Override
     public void setPassNumberOfCorrectAnswer(int passNumberOfCorrectAnswer) {
         this.passNumberOfCorrectAnswer = passNumberOfCorrectAnswer;
     }
@@ -37,7 +35,6 @@ public class AppProps implements GeneralProps, LocaleProps {
         return locale;
     }
 
-    @Override
     public void setLocale(Locale locale) {
         this.locale = locale;
     }

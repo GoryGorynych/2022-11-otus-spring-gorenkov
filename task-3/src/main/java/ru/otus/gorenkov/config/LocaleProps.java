@@ -6,5 +6,4 @@ public interface LocaleProps {
 
     Locale getLocale();
 
-    void setLocale(Locale locale);
 }
