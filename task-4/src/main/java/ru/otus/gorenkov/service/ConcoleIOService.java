@@ -12,15 +12,12 @@ public class ConcoleIOService implements IOService {
 
     private final PrintStream out;
     private final Scanner scanner;
+    private final MessageServise messageServise;
 
-    private final MessageSource messageSource;
-    private final LocaleProps localeProps;
-
-    public ConcoleIOService(MessageSource source, LocaleProps config) {
+    public ConcoleIOService(MessageServise messageServise, MessageSource source, LocaleProps config) {
         out = System.out;
         scanner = new Scanner(System.in);
-        this.messageSource = source;
-        this.localeProps = config;
+        this.messageServise = messageServise;
     }
 
     @Override
@@ -35,6 +32,6 @@ public class ConcoleIOService implements IOService {
 
     @Override
     public void out(String messageCode, Object[] params) {
-        out.println(messageSource.getMessage(messageCode, params, localeProps.getLocale()));
+        out.println(messageServise.getMessage(messageCode, params));
     }
 }

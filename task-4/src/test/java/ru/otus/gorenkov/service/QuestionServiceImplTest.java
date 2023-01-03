@@ -3,14 +3,14 @@ package ru.otus.gorenkov.service;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.gorenkov.dao.QuestionCardDao;
 import ru.otus.gorenkov.domain.Answer;
 import ru.otus.gorenkov.domain.QuestionCard;
 import ru.otus.gorenkov.exception.CorrectAnswerNotFoundException;
+import ru.otus.gorenkov.shell.WelcomeApplicationRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,16 +22,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Сервис карточек вопросов ")
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class QuestionServiceImplTest {
 
-    @Mock
+    @MockBean
     private QuestionCardDao questionDao;
 
-    @Mock
-    private QuestionConverter converter;
+//    @MockBean
+//    private QuestionConverter converter;
 
-    @InjectMocks
+    @MockBean
+    private WelcomeApplicationRunner runner;
+
+    @Autowired
     private QuestionServiceImpl questionService;
 
     private static List<QuestionCard> testQuestionCards;
