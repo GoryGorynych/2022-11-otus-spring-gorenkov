@@ -5,3 +5,4 @@
 ### Список заданий
 1. **task-1**. Введение в Spring Framework.
 2. **task-2**. Конфигурирование Spring-приложений.
+3. **task-5**. DAO на Spring JDBC.
