@@ -1,0 +1,11 @@
+spring:
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+  banner:
+    location: banner.txt
+
+appication:
+  path-csv: "questionsWithAnswers_${appication.locale}.csv"
+  passNumberOfCorrectAnswer: 4
+  locale: en
