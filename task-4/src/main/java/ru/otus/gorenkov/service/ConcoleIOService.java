@@ -1,8 +1,6 @@
 package ru.otus.gorenkov.service;
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.gorenkov.config.LocaleProps;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -14,15 +12,15 @@ public class ConcoleIOService implements IOService {
     private final Scanner scanner;
     private final MessageServise messageServise;
 
-    public ConcoleIOService(MessageServise messageServise, MessageSource source, LocaleProps config) {
+    public ConcoleIOService(MessageServise messageServise) {
         out = System.out;
         scanner = new Scanner(System.in);
         this.messageServise = messageServise;
     }
 
     @Override
-    public void out(String messgae) {
-        out.println(messgae);
+    public void out(String message) {
+        out.println(message);
     }
 
     @Override
