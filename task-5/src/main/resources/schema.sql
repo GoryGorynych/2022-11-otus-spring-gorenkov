@@ -8,8 +8,8 @@ create table genres
 drop table if exists authors;
 create table authors
 (
-    id           bigint auto_increment,
-    fullname     nvarchar(150) PRIMARY KEY,
+    id           IDENTITY PRIMARY KEY,
+    fullname     nvarchar(150) NOT NULL,
     birthyear    smallint NULL,
     deathyear    smallint NULL ,
     birthcountry nvarchar(50) NULL
@@ -20,10 +20,10 @@ create table books
 (
     id              IDENTITY PRIMARY KEY,
     name            nvarchar(255) NOT NULL,
-    author_fullname nvarchar(150) NOT NULL,
+    author_id       bigint NOT NULL,
     genre           nvarchar(50)  NOT NULL,
     publicationdate DATE          NULL,
-    FOREIGN KEY(author_fullname) REFERENCES authors(fullname),
+    FOREIGN KEY(author_id) REFERENCES authors(id),
     FOREIGN KEY(genre) REFERENCES genres(genre),
-    UNIQUE (name, author_fullname)
+    UNIQUE (name, author_id)
 );

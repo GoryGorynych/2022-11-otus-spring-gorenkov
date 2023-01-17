@@ -51,14 +51,14 @@ public class BookDaoJdbc implements BookDao {
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", book.getName());
-        params.addValue("author_fullname", book.getAuthor().getFullName());
+        params.addValue("author_id", book.getAuthor().getId());
         params.addValue("genre", book.getGenre().getGenre());
         params.addValue("publicationdate", book.getPublicationDate());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbc.update("insert into books (name, author_fullname, genre, publicationdate) " +
-                        "values (:name, :author_fullname, :genre, :publicationdate)",
+        jdbc.update("insert into books (name, author_id, genre, publicationdate) " +
+                        "values (:name, :author_id, :genre, :publicationdate)",
                 params, keyHolder, new String[] {"id"});
 
         return keyHolder.getKey().longValue();
@@ -69,7 +69,7 @@ public class BookDaoJdbc implements BookDao {
         return jdbc.queryForObject(
                 "select b.id as book_id, b.name, a.id as author_id, a.fullname, a.birthyear, a.deathyear, " +
                         "a.birthcountry, b.genre, g.description, b.publicationdate  " +
-                        "from books b inner join authors a on b.author_fullname = a.fullname " +
+                        "from books b inner join authors a on b.author_id = a.id " +
                         "inner join genres g on b.genre = g.genre where b.id = :id",
                 Map.of("id", id), bookRowMapper);
     }
@@ -79,7 +79,7 @@ public class BookDaoJdbc implements BookDao {
         return jdbc.query(
                 "select b.id as book_id, b.name, a.id as author_id, a.fullname, a.birthyear, a.deathyear, " +
                         "a.birthcountry, b.genre, g.description, b.publicationdate  " +
-                        "from books b inner join authors a on b.author_fullname = a.fullname " +
+                        "from books b inner join authors a on b.author_id = a.id " +
                         "inner join genres g on b.genre = g.genre",
                 bookRowMapper);
     }
@@ -89,12 +89,12 @@ public class BookDaoJdbc implements BookDao {
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", book.getName());
-        params.addValue("author_fullname", book.getAuthor().getFullName());
+        params.addValue("author_id", book.getAuthor().getId());
         params.addValue("genre", book.getGenre().getGenre());
         params.addValue("publicationdate", book.getPublicationDate());
         params.addValue("id", id);
 
-        jdbc.update("update books set name = :name, author_fullname = :author_fullname, genre = :genre, " +
+        jdbc.update("update books set name = :name, author_id = :author_id, genre = :genre, " +
                         "publicationdate = :publicationdate where id = :id",
                 params);
     }
@@ -110,7 +110,7 @@ public class BookDaoJdbc implements BookDao {
         return jdbc.query(
                 "select b.id as book_id, b.name, a.id as author_id, a.fullname, a.birthyear, a.deathyear, " +
                         "a.birthcountry, b.genre, g.description, b.publicationdate  " +
-                        "from books b inner join authors a on b.author_fullname = a.fullname " +
+                        "from books b inner join authors a on b.author_id = a.id " +
                         "inner join genres g on b.genre = g.genre where a.fullname = :authorName",
                 Map.of("authorName", authorName), bookRowMapper);
     }
@@ -120,7 +120,7 @@ public class BookDaoJdbc implements BookDao {
         return jdbc.query(
                 "select b.id as book_id, b.name, a.id as author_id, a.fullname, a.birthyear, a.deathyear, " +
                         "a.birthcountry, b.genre, g.description, b.publicationdate  " +
-                        "from books b inner join authors a on b.author_fullname = a.fullname " +
+                        "from books b inner join authors a on b.author_id = a.id " +
                         "inner join genres g on b.genre = g.genre where g.genre = :genre",
                 Map.of("genre", genre), bookRowMapper);
     }

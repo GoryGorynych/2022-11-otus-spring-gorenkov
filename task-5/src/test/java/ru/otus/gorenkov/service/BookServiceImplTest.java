@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.gorenkov.dao.AuthorDaoJdbc;
@@ -13,10 +14,14 @@ import ru.otus.gorenkov.dao.GenreDaoJdbc;
 import ru.otus.gorenkov.domain.Author;
 import ru.otus.gorenkov.domain.Book;
 import ru.otus.gorenkov.domain.Genre;
-import ru.otus.gorenkov.service.BookServiceImpl;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Сервис для книг должен ")
 @JdbcTest
@@ -25,11 +30,11 @@ class BookServiceImplTest {
 
     @Autowired
     private BookServiceImpl bookService;
-    @Autowired
+    @MockBean
     private BookDaoJdbc bookDao;
-    @Autowired
+    @MockBean
     private GenreDaoJdbc genreDao;
-    @Autowired
+    @MockBean
     private AuthorDaoJdbc authorDao;
 
     private Author testedAuthor;
@@ -59,62 +64,76 @@ class BookServiceImplTest {
     @DisplayName("корректно сохранять книгу если автор и жанр не существует")
     @Test
     void shouldCorrectSaveBookIfAuthorAndGenreNotExist() {
+        long expectedId = 1L;
+        when(genreDao.isExists(anyString())).thenReturn(false);
+        when(authorDao.isExists(anyString())).thenReturn(false);
+        when(bookDao.insert(any())).thenReturn(1L);
 
         long newId = bookService.save(testedBook);
-        Book actualBook = bookService.getById(newId);
 
-        assertThat(actualBook).usingRecursiveComparison().ignoringFieldsMatchingRegexes("id", "author.id").isEqualTo(testedBook);
+        verify(genreDao, times(1)).insert(any());
+        verify(authorDao, times(1)).insert(any());
+        assertThat(expectedId).isEqualTo(newId);
+
     }
 
     @DisplayName("корректно сохранять книгу если автор уже существует")
     @Test
     void shouldCorrectSaveBookIfAuthorExists() {
 
-        authorDao.insert(testedAuthor);
-        long newId = bookService.save(testedBook);
-        Book actualBook = bookService.getById(newId);
+        when(genreDao.isExists(anyString())).thenReturn(false);
+        when(authorDao.isExists(anyString())).thenReturn(true);
 
-        assertThat(actualBook).usingRecursiveComparison().ignoringFieldsMatchingRegexes("id", "author.id").isEqualTo(testedBook);
+        bookService.save(testedBook);
+
+        verify(genreDao, times(1)).insert(any());
+        verify(authorDao, times(0)).insert(any());
+
     }
 
     @DisplayName("корректно сохранять книгу если жанр уже существует")
     @Test
     void shouldCorrectSaveBookIfGenreExists() {
 
-        genreDao.insert(testedGenre);
-        long newId = bookService.save(testedBook);
-        Book actualBook = bookService.getById(newId);
+        when(genreDao.isExists(anyString())).thenReturn(true);
+        when(authorDao.isExists(anyString())).thenReturn(true);
 
-        assertThat(actualBook).usingRecursiveComparison().ignoringFieldsMatchingRegexes("id", "author.id").isEqualTo(testedBook);
+        bookService.save(testedBook);
+
+        verify(genreDao, times(0)).insert(any());
+        verify(authorDao, times(0)).insert(any());
     }
 
     @DisplayName("корректно обновлять автора книги если автора не существует")
     @Test
     void shouldCorrectUpdateAuthorOfBooksIfAuthorNotExists() {
-        Book expectedBook = bookService.getById(1);
-        expectedBook.getAuthor().setFullName("New Author");
+        when(genreDao.isExists(anyString())).thenReturn(true);
+        when(authorDao.isExists(anyString())).thenReturn(false);
 
-        bookService.update(expectedBook, expectedBook.getId());
-        Book resultBook = bookService.getById(1);
+        bookService.update(testedBook, testedBook.getId());
 
-        assertThat(resultBook).usingRecursiveComparison().ignoringFieldsMatchingRegexes("author.id").isEqualTo(expectedBook);
+        verify(genreDao, times(0)).insert(any());
+        verify(authorDao, times(1)).insert(any());
     }
 
     @DisplayName("корректно обновлять жанр книги если жанр не существует")
     @Test
     void shouldCorrectUpdateGenreOfBooksIfGenreNotExists() {
-        Book expectedBook = bookService.getById(1);
-        expectedBook.setGenre(Genre.builder().genre("New Genre").build());
 
-        bookService.update(expectedBook, expectedBook.getId());
-        Book resultBook = bookService.getById(1);
+        when(genreDao.isExists(anyString())).thenReturn(false);
+        when(authorDao.isExists(anyString())).thenReturn(true);
 
-        assertThat(resultBook).usingRecursiveComparison().isEqualTo(expectedBook);
+        bookService.update(testedBook, testedBook.getId());
+
+        verify(genreDao, times(1)).insert(any());
+        verify(authorDao, times(0)).insert(any());
     }
 
     @DisplayName("бросать исключение с ожидаемым сообщением при операции получения если книга не найдена")
     @Test
     void shouldThrowExceptionWithExpectedMessageWhenGettingIfBookNotFound() {
+        when(bookDao.getById(anyLong())).thenThrow(new EmptyResultDataAccessException(1));
+
         assertThatThrownBy(() -> bookService.getById(1000)).hasMessage("Книга не найдена");
     }
 
@@ -122,6 +141,7 @@ class BookServiceImplTest {
     @Test
     void shouldThrowExceptionWithExpectedMessageWhenUpdatingIfBookNotFound() {
         long notExistsId = 1000;
+        when(bookDao.getById(anyLong())).thenThrow(new EmptyResultDataAccessException(1));
         String expectedMessage = String.format("Книга с ид %s не найдена", notExistsId);
         assertThatThrownBy(() -> bookService.update(Book.builder().build(), notExistsId)).hasMessage(expectedMessage);
     }
@@ -129,12 +149,16 @@ class BookServiceImplTest {
     @DisplayName("должен удалять автора и жанр, по которым нет книг")
     @Test
     void shouldDeleteAuthorAndGenreWithoutBooks() {
+
+        when(bookDao.getById(anyLong())).thenReturn(testedBook);
+        when(bookDao.findByAuthor(anyString())).thenReturn(new ArrayList<>());
+        when(bookDao.findByGenre(anyString())).thenReturn(new ArrayList<>());
+
         long scriptBookId = 1;
-        Book scriptBook = bookService.getById(scriptBookId);
         bookService.deleteById(scriptBookId);
 
-        assertThatThrownBy(() -> authorDao.getById(scriptBook.getId())).isInstanceOf(EmptyResultDataAccessException.class);
-        assertThatThrownBy(() -> genreDao.get(scriptBook.getGenre().getGenre())).isInstanceOf(EmptyResultDataAccessException.class);
+        verify(authorDao, times(1)).deleteById(anyLong());
+        verify(genreDao, times(1)).delete(anyString());
 
     }
 }

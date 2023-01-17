@@ -25,7 +25,8 @@ public class BookServiceImpl implements BookService {
             genreDao.insert(book.getGenre());
         }
         if (!authorDao.isExists(book.getAuthor().getFullName())) {
-            authorDao.insert(book.getAuthor());
+            long authorId = authorDao.insert(book.getAuthor());
+            book.getAuthor().setId(authorId);
         }
 
         long bookId = bookDao.insert(book);
@@ -61,7 +62,8 @@ public class BookServiceImpl implements BookService {
             genreDao.insert(book.getGenre());
         }
         if (!authorDao.isExists(book.getAuthor().getFullName())) {
-            authorDao.insert(book.getAuthor());
+            long authorId = authorDao.insert(book.getAuthor());
+            book.getAuthor().setId(authorId);
         }
 
         bookDao.update(book, id);
