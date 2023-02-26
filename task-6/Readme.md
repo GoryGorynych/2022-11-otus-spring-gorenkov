@@ -19,7 +19,7 @@
 Данная работа не засчитывает предыдущую!
 
 ### Диаграмма таблиц
-![image info](./pictures/schemaDB.png)
+![image info](./pictures/schemaDB_ORMtask.png)
 
 ### Как пользоваться
 * **dbconsole / dbc** \
@@ -37,5 +37,18 @@
 Пример: `edit 1 'New name' 'New full name', 'New genre'`
 * **delete / d [id]** \
 удалить книгу по id \
-Пример `delete 1`
+Пример `delete 6` \
+* **comment / d [bookId, nickName, text]** \
+добавить комментарий к книге \
+Пример `comment 1 'user' 'Новый коммент к книге 1'` \
+* **editcom / ecom [id, text]** \
+редактировать комментарий по ид \
+Пример `editcom 1 'Редактированный коммент к книге 1'` \
+* **showcom / scom [bookId]** \
+напечатать все комментарии по книге \
+Пример `showcom 1` \
+* **delcom / dcom [bookId]** \
+удалить все комментарии по книге \
+Пример `delcom 1` \
+
 
