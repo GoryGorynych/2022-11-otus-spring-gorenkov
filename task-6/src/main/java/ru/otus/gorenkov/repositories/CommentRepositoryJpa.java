@@ -1,15 +1,13 @@
 package ru.otus.gorenkov.repositories;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.gorenkov.models.Comment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.util.List;
 
-@Repository
+@Component
 public class CommentRepositoryJpa implements CommentRepository{
 
     @PersistenceContext
@@ -22,14 +20,6 @@ public class CommentRepositoryJpa implements CommentRepository{
     @Override
     public Comment findById(long id) {
         return em.find(Comment.class, id);
-    }
-
-    @Override
-    public List<Comment> findByBookId(long bookId) {
-        TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.bookId = :bookId",
-                Comment.class);
-        query.setParameter("bookId", bookId);
-        return query.getResultList();
     }
 
     @Override

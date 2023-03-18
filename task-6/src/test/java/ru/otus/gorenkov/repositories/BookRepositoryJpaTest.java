@@ -29,7 +29,7 @@ class BookRepositoryJpaTest {
 
     private static final long FIRST_BOOK_ID = 1L;
     private static final int EXPECTED_NUMBER_BOOKS = 10;
-    private static final int EXPECTED_QUERIES_COUNT = 1;
+    private static final int EXPECTED_QUERIES_COUNT = 2;
 
     @DisplayName("должен загружать информацию о нужной книге по ее ид")
     @Test

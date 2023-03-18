@@ -6,7 +6,7 @@ import ru.otus.gorenkov.models.Author;
 import ru.otus.gorenkov.models.Book;
 import ru.otus.gorenkov.models.Comment;
 import ru.otus.gorenkov.models.Genre;
-
+import ru.otus.gorenkov.utils.Converter;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -18,10 +18,11 @@ public class BookProcessor implements CommandProcessor {
 
     private final BookService bookService;
     private final CommentService commentService;
+    private final Converter converter;
 
     @Override
     public String showAll() {
-        return bookService.getAll().toString();
+        return converter.booksToText(bookService.getAll());
     }
 
     @Override
@@ -30,7 +31,7 @@ public class BookProcessor implements CommandProcessor {
             return "Укажите ид книги";
         }
         Book book = bookService.getById(id);
-        return Objects.isNull(book) ? "" : book.toString();
+        return Objects.isNull(book) ? "" : converter.bookToText(book);
     }
 
     @Override
@@ -136,9 +137,8 @@ public class BookProcessor implements CommandProcessor {
 
     @Override
     public String showAllCommentsByBook(long bookId) {
-        return Optional.ofNullable(commentService.findByBook(bookId))
-                .orElse(new ArrayList<Comment>())
-                .toString();
+        return converter.commentsToText(Optional.ofNullable(commentService.findByBook(bookId))
+                .orElse(new ArrayList<>()));
     }
 
 }

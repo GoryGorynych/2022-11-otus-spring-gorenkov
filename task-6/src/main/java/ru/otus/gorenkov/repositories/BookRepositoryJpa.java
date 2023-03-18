@@ -1,18 +1,15 @@
 package ru.otus.gorenkov.repositories;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.gorenkov.models.Book;
 
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 
-@Repository
+@Component
 public class BookRepositoryJpa implements BookRepository{
 
     @PersistenceContext
@@ -29,29 +26,26 @@ public class BookRepositoryJpa implements BookRepository{
 
     @Override
     public List<Book> findAll() {
-        EntityGraph entityGraph = em.getEntityGraph("authors-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre left join fetch b.comments", Book.class);
-        query.setHint(EntityGraphType.FETCH.getKey(), entityGraph);
+        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre", Book.class);
+        setAuthorsEntityGraph(query);
         return query.getResultList();
     }
 
     @Override
     public List<Book> findByAuthor(String fullName) {
-        EntityGraph entityGraph = em.getEntityGraph("authors-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre left join fetch b.comments " +
+        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre " +
                 "where b.author.fullName = :name", Book.class);
         query.setParameter("name", fullName);
-        query.setHint(EntityGraphType.FETCH.getKey(), entityGraph);
+        setAuthorsEntityGraph(query);
         return query.getResultList();
     }
 
     @Override
     public List<Book> findByGenre(String genre) {
-        EntityGraph entityGraph = em.getEntityGraph("authors-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre left join fetch b.comments " +
+        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genre " +
                 "where b.genre.genre = :genre", Book.class);
         query.setParameter("genre", genre);
-        query.setHint(EntityGraphType.FETCH.getKey(), entityGraph);
+        setAuthorsEntityGraph(query);
         return query.getResultList();
     }
 
@@ -69,5 +63,10 @@ public class BookRepositoryJpa implements BookRepository{
     public void deleteById(long id) {
         Book book = em.find(Book.class, id);
         em.remove(book);
+    }
+
+    private void setAuthorsEntityGraph(Query query) {
+        EntityGraph entityGraph = em.getEntityGraph("authors-entity-graph");
+        query.setHint(EntityGraphType.FETCH.getKey(), entityGraph);
     }
 }

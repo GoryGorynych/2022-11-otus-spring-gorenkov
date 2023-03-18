@@ -4,44 +4,51 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.gorenkov.models.Comment;
+import ru.otus.gorenkov.models.dto.CommentDto;
+import ru.otus.gorenkov.repositories.BookRepository;
 import ru.otus.gorenkov.repositories.CommentRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepository repository;
+    private final CommentRepository commentRepository;
+    private final BookRepository bookRepository;
 
 
     @Override
-    @Transactional(readOnly = true)
     public Comment findById(long id) {
-        return repository.findById(id);
+        return commentRepository.findById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Comment> findByBook(long bookId) {
-        return repository.findByBookId(bookId);
+    @Transactional
+    public List<CommentDto> findByBook(long bookId) {
+        List<Comment> commentList = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Книга не найдена")).getComments();
+        return commentList.stream()
+                .map(comment -> new CommentDto(comment.getNickName(), comment.getText()))
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public Comment save(Comment comment) {
-        return repository.save(comment);
+        return commentRepository.save(comment);
     }
 
     @Override
     @Transactional
     public void removeOne(long commentId) {
-        repository.deleteById(commentId);
+        commentRepository.deleteById(commentId);
     }
 
     @Override
     @Transactional
     public void removeByBook(long bookId) {
-        repository.deleteByBookId(bookId);
+        commentRepository.deleteByBookId(bookId);
     }
 }

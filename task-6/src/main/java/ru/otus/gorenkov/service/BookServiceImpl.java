@@ -22,14 +22,12 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Book getById(long id) {
         Optional<Book> optionalBook = repository.findById(id);
         return optionalBook.orElseThrow(() -> new RuntimeException("Книга не найдена"));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Book> getAll() {
         return repository.findAll();
     }
