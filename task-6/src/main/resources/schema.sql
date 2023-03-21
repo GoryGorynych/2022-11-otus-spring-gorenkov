@@ -3,7 +3,8 @@ create table genres
 (
     id IDENTITY PRIMARY KEY,
     genre       nvarchar(50) NOT NULL,
-    description nvarchar(255) NULL
+    description nvarchar(255) NULL,
+    UNIQUE (genre)
 );
 
 drop table if exists authors;
@@ -13,7 +14,8 @@ create table authors
     fullname     nvarchar(150) NOT NULL,
     birthyear    smallint NULL,
     deathyear    smallint NULL,
-    birthcountry nvarchar(50) NULL
+    birthcountry nvarchar(50) NULL,
+    UNIQUE (fullname)
 );
 
 drop table if exists books;

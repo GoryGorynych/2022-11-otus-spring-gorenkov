@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CommentDto> findByBook(long bookId) {
         List<Comment> commentList = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Книга не найдена")).getComments();

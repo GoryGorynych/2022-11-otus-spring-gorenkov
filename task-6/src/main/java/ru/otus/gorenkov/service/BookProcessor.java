@@ -35,11 +35,7 @@ public class BookProcessor implements CommandProcessor {
     }
 
     @Override
-    public String add(String... attributes) {
-
-        String bookName = attributes[0];
-        String authorName = attributes[1];
-        String genre = attributes[2];
+    public String add(String bookName, String authorName, String genre) {
 
         if (bookName.isBlank()) {
             return "Укажите название книги";
@@ -50,10 +46,21 @@ public class BookProcessor implements CommandProcessor {
         if (genre.isBlank()) {
             return "Укажите жанр книги";
         }
+
+        Author authorEntity = bookService.findAuthorByFullName(authorName);
+        if (authorEntity == null) {
+            authorEntity = Author.builder().fullName(authorName).build();
+        }
+
+        Genre genreEntity = bookService.findGenreByGenre(genre);
+        if (genreEntity == null) {
+            genreEntity = Genre.builder().genre(genre).build();
+        }
+
         Book book = Book.builder()
                 .name(bookName)
-                .author(Author.builder().fullName(authorName).build())
-                .genre(Genre.builder().genre(genre).build())
+                .author(authorEntity)
+                .genre(genreEntity)
                 .build();
 
         bookService.save(book);
@@ -62,16 +69,12 @@ public class BookProcessor implements CommandProcessor {
     }
 
     @Override
-    public String edit(long id, String... attributes) {
+    public String edit(long id, String bookName, String authorName, String genre) {
 
         if (id == 0) {
             return "Укажите ид книги";
         }
         Book book = bookService.getById(id);
-
-        String bookName = attributes[0];
-        String authorName = attributes[1];
-        String genre = attributes[2];
 
         boolean nothingUpdate = true;
         if (!bookName.isBlank()) {
@@ -108,10 +111,7 @@ public class BookProcessor implements CommandProcessor {
     }
 
     @Override
-    public String addComment(Object... attributes) {
-        long bookId = (long) attributes[0];
-        String nickName = (String) attributes[1];
-        String text = (String) attributes[2];
+    public String addComment(long bookId, String nickName, String text) {
 
         Comment comment = Comment.builder().bookId(bookId).nickName(nickName).text(text).build();
         commentService.save(comment);
