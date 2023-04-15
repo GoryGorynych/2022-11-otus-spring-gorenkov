@@ -25,6 +25,7 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "book_id")
-    private long bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }

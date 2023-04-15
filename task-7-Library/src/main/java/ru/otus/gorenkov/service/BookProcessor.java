@@ -103,7 +103,8 @@ public class BookProcessor implements CommandProcessor {
     @Override
     public String addComment(long bookId, String nickName, String text) {
 
-        Comment comment = Comment.builder().bookId(bookId).nickName(nickName).text(text).build();
+        Book book = bookService.getById(bookId);
+        Comment comment = Comment.builder().book(book).nickName(nickName).text(text).build();
         commentService.save(comment);
 
         return "Комментарий добавлен";
