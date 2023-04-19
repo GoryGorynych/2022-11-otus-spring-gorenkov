@@ -9,3 +9,4 @@
 4. **task-4**. Продвинутая конфигурация (часть 2) - Conditionals, Events, тестирование
 5. **task-5**. DAO на Spring JDBC.
 6. **task-6**. JPQL, Spring ORM, DAO на основе Spring ORM + JPA
+7. **task-7**. "Белая магия" Spring Data: Spring Data JPA
