@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.otus.gorenkov</groupId>
-	<artifactId>task-8-MongoDB</artifactId>
+	<artifactId>task-8</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>task-8 MongoDB</name>
-	<description>task-8 MongoDB</description>
+	<name>task-8</name>
+	<description>task-8</description>
 	<properties>
 		<java.version>11</java.version>
 		<spring-shell.version>2.1.4</spring-shell.version>

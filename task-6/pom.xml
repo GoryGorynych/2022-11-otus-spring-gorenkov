@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.otus.gorenkov</groupId>
-	<artifactId>task-6-Library</artifactId>
+	<artifactId>task-6</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>task-6-Library</name>
-	<description>task-6-Library</description>
+	<name>task-6</name>
+	<description>task-6</description>
 	<properties>
 		<java.version>11</java.version>
 		<spring-shell.version>2.1.4</spring-shell.version>
