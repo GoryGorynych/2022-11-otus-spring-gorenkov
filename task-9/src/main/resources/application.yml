@@ -1,0 +1,24 @@
+spring:
+  data:
+    mongodb:
+      database: library
+      port: 0
+  mongodb:
+    embedded:
+      version: 3.5.5
+
+mongock:
+  runner-type: "ApplicationRunner" # default
+#  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.gorenkov.mongock.changelog
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+    root: INFO

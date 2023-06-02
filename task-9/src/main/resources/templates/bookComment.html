@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns="http://www.w3.org/1999/html"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Book comments</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        padding: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Book:</h3>
+
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Author</th>
+          <th>Genre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:object="${book}">
+          <td th:text="*{name}">Book 1</td>
+          <td th:text="*{author.fullName}">Author 1</td>
+          <td th:text="*{genre.title}">Genre 1</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="my-3">
+      <a href="list.html" th:href="@{/}"
+        ><button class="btn btn-secondary" type="button">Back</button>
+      </a>
+    </div>
+
+    <h3>Comments:</h3>
+
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Nick name</th>
+          <th>Text</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="comment : ${comments}" th:object="${comment}">
+          <td th:text="*{nickName}">Nick name 1</td>
+          <td th:text="*{text}">Comment text</td>
+          <td>
+            <form
+              method="post"
+              th:action="@{/comments/delete(id=*{id}, bookid=${book.id})}"
+            >
+              <a href="#" onclick="parentNode.submit()">Delete comment</a>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="pt-5">New comment</h3>
+
+    <form
+      th:method="post"
+      action="bookComment.html"
+      th:action="@{/comments/add(bookId=${book.id})}"
+    >
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default"
+          >Nick name</span
+        >
+        <input
+          class="form-control"
+          aria-label="Sizing example input"
+          aria-describedby="inputGroup-sizing-default"
+          id="input-nickname"
+          name="nickName"
+          type="text"
+          value=""
+        />
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default"
+          >Text</span
+        >
+        <input
+          class="form-control"
+          aria-label="Sizing example input"
+          aria-describedby="inputGroup-sizing-default"
+          id="input-text"
+          name="text"
+          type="text"
+          value=""
+        />
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-primary" type="submit">Add comment</button>
+      </div>
+    </form>
+  </body>
+</html>
