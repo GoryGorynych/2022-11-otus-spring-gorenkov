@@ -14,7 +14,6 @@ import ru.otus.gorenkov.repositories.CommentRepository;
 @RestController
 public class BookRestController {
 
-
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
 
