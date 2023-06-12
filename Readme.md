@@ -11,3 +11,4 @@
 8. **task-8**. Spring Data для подключения к нереляционным БД
 9. **task-9**. Spring MVC View
 10. **task-10**. Современные приложения на Spring MVC
+11. **task-11**. Spring WebFlux
