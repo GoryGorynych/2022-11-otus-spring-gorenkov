@@ -12,3 +12,4 @@
 9. **task-9**. Spring MVC View
 10. **task-10**. Современные приложения на Spring MVC
 11. **task-11**. Spring WebFlux
+12. **task-12**. Spring Security: Механизмы аутентификации
