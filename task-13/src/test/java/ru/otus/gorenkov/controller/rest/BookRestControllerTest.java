@@ -39,7 +39,7 @@ class BookRestControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "user", authorities = {"ROLE_USER"})
     @Test
     void listBooks() throws Exception {
         List<Book> books = List.of(getBookN(1), getBookN(2));
@@ -56,7 +56,7 @@ class BookRestControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(bookDtos)));
     }
 
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "user", authorities = {"ROLE_USER"})
     @Test
     void getOneBook() throws Exception {
         Book book = getBookN(1);
@@ -70,7 +70,7 @@ class BookRestControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(bookDto)));
     }
 
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     @Test
     void updateBook() throws Exception {
 
@@ -89,7 +89,7 @@ class BookRestControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(updateBookDto)));
     }
 
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     @Test
     void addBook() throws Exception {
 
@@ -107,7 +107,7 @@ class BookRestControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(bookDto)));
     }
 
-    @WithMockUser(username = "admin")
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     @Test
     void deleteBook() throws Exception {
 
