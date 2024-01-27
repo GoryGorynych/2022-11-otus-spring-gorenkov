@@ -24,7 +24,7 @@ public class SecurityConfiguration {
         http.csrf().disable()
                 .authorizeRequests(auth -> auth
                         .antMatchers(HttpMethod.PUT, "/api/v1/books/*").hasRole(ADMIN_ROLE)
-                        .antMatchers(HttpMethod.POST, "/api/v1/books").hasRole(ADMIN_ROLE)
+                        .antMatchers(HttpMethod.POST, "/api/v1/books/").hasRole(ADMIN_ROLE)
                         .antMatchers(HttpMethod.DELETE, "/api/v1/books/*").hasRole(ADMIN_ROLE)
                         .antMatchers("/edit/*").hasRole(ADMIN_ROLE)
                         .antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole(ADMIN_ROLE, USER_ROLE)
