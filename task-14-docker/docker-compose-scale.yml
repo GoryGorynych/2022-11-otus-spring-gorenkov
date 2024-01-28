@@ -1,0 +1,6 @@
+version: '3'
+services:
+  library:
+    build: .
+    ports:
+      - "18800-18888:8080"

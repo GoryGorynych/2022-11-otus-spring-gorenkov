@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27020}
+      database: ${MONGO_DATABASE:library}
+      username: ${MONGO_USERNAME:root}
+      password: ${MONGO_PASSWORD:root}
+
+mongock:
+  runner-type: "ApplicationRunner" # default
+#  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.gorenkov.mongock.changelog
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+    root: INFO

@@ -1,0 +1,28 @@
+version: '3'
+services:
+  library:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_DATABASE: library
+      MONGO_USERNAME: root
+      MONGO_PASSWORD: root
+    volumes:
+      - ./share:/app/share
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27020:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - mongo_data:/data/db
+volumes:
+  mongo_data:
